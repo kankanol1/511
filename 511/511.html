@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{
+        margin:0;
+        padding:0;
+    }
+    #box{
+        position:absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        width: 200px;
+        height: 200px;
+        background-image: url("imags/sea.jpg");
+        opacity: 0.3;
+    }
+</style>
+<body>
+<div id="box"></div>
+
+<script>
+    var oBox = document.getElementById('box');
+    console.log(oBox);
+    //move(oBox,'left',600,3);
+    //move(oBox,'top',600,2);
+    /*
+    function move(obj,attr,target,time){
+        var startAttr = parseInt(getStyle(obj,attr));
+        console.log(startAttr);
+        var speed = (target - startAttr)/time;//计算速度
+        console.log(speed);
+        var startTime = new Date();//获取初始时间
+        //console.log(nowTime);
+        timer = setInterval(function(){
+            var nowTime = new Date();
+            var _time = (nowTime - startTime)/1000;
+            if(startAttr + speed * _time>target){
+                nowAttr = target;
+                clearInterval(timer);
+            }
+            obj.style[attr] = startAttr + speed * _time + 'px';
+            console.log(nowTime-startTime);
+
+        },1000/60);
+        function getStyle(obj,attr){
+            return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+            //return obj.currentStyle=getComputedStyle(obj)[attr];
+        }
+    }
+    */
+    move(oBox,{
+       // 'left':300,
+        //'top':200,
+        'width':1000,
+        'height':1000,
+        'top':50,
+        'left':50,
+        'opacity':1
+    },2);
+    function move(obj,jsonTarget,time){
+        console.log(jsonTarget);
+        var jsonStart ={};//存放初始值
+            jsonSpeed = {};//存放属性值
+            startTime = new Date();//初始时间
+        for (var attr in jsonTarget){
+            jsonStart[attr] = parseFloat(getStyle(obj,attr));
+            jsonSpeed[attr] = (jsonTarget[attr]-jsonStart[attr])/time;
+        }
+
+        timer = setInterval(function(){
+            var nowTime = new Date();
+            var _time = (nowTime - startTime)/1000;
+            for(var attr in jsonTarget){
+                var nowAttr = jsonStart[attr]+jsonSpeed[attr]*_time;
+                if(nowAttr>jsonTarget[attr]){
+                    nowAttr = jsonTarget[attr];
+                    clearInterval(timer);
+                }
+                obj.style[attr] = attr==='opacity'?nowAttr:nowAttr+'px';
+                //obj.style[attr] = nowAttr + 'px';
+            }
+        },1000/60);
+        function getStyle(obj,attr){
+            return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+        }
+    }
+</script>
+
+</body>
+</html>
+<!--
+200px 到 500px 用时2s
+-->
+
